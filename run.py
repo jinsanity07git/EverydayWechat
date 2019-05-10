@@ -1,10 +1,11 @@
+#!/usr/bin/python
+# -*- coding: utf-8  -*-
 from GFWeather import gfweather
 
 
 def run():
     '''
-    主程序入口
-    :return:
+    主程序入口:return:
     '''
     gfweather().run()
 

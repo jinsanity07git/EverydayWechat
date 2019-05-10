@@ -1,3 +1,6 @@
+#!/usr/bin/python
+# -*- coding: utf-8  -*-
+
 import requests
 from datetime import datetime
 from bs4 import BeautifulSoup
@@ -6,6 +9,7 @@ from apscheduler.schedulers.blocking import BlockingScheduler
 import time
 import city_dict
 import yaml
+import json
 
 
 class gfweather:
@@ -201,42 +205,59 @@ class gfweather:
         :return: 需要发送的话。
         '''
         print('获取天气信息..')
-        weather_url = f'http://t.weather.sojson.com/api/weather/city/{city_code}'
-        resp = requests.get(url=weather_url)
-        if resp.status_code == 200 and self.isJson(resp) and resp.json().get('status') == 200:
-            weatherJson = resp.json()
-            # 今日天气
-            today_weather = weatherJson.get('data').get('forecast')[1]
-            # 今日日期
-            today_time = datetime.now().strftime('%Y{y}%m{m}%d{d} %H:%M:%S').format(y='年', m='月', d='日')
-            # 今日天气注意事项
-            notice = today_weather.get('notice')
-            # 温度
-            high = today_weather.get('high')
-            high_c = high[high.find(' ') + 1:]
-            low = today_weather.get('low')
-            low_c = low[low.find(' ') + 1:]
-            temperature = f"温度 : {low_c}/{high_c}"
+        # weather_url = f'http://t.weather.sojson.com/api/weather/city/{city_code}'
+        # resp = requests.get(url=weather_url)
+        # if resp.status_code == 200 and self.isJson(resp) and resp.json().get('status') == 200:
+        #     weatherJson = resp.json()
+        #     # 今日天气
+        #     today_weather = weatherJson.get('data').get('forecast')[1]
+        #     # 今日日期
+        #     today_time = datetime.now().strftime('%Y{y}%m{m}%d{d} %H:%M:%S').format(y='年', m='月', d='日')
+        #     # 今日天气注意事项
+        #     notice = today_weather.get('notice')
+        #     # 温度
+        #     high = today_weather.get('high')
+        #     high_c = high[high.find(' ') + 1:]
+        #     low = today_weather.get('low')
+        #     low_c = low[low.find(' ') + 1:]
+        #     temperature = f"温度 : {low_c}/{high_c}"
 
-            # 风
-            fx = today_weather.get('fx')
-            fl = today_weather.get('fl')
-            wind = f"{fx} : {fl}"
+        #     # 风
+        #     fx = today_weather.get('fx')
+        #     fl = today_weather.get('fl')
+        #     wind = f"{fx} : {fl}"
 
-            # 空气指数
-            aqi = today_weather.get('aqi')
-            aqi = f"空气 : {aqi}"
+        #     # 空气指数
+        #     aqi = today_weather.get('aqi')
+        #     aqi = f"空气 : {aqi}"
+        location = 'Milwaukee'
+        # 从网站获取数据(key几个小时后失效)
+        appid = '47a564656ff9e7f0001a0a15a0b9b3ba'
+        response = requests.get(r'http://api.openweathermap.org/data/2.5/find?q=%s&cnt=3&lang=zh_cn&units=metric&APPID=%s' % (location,appid))
+        response.raise_for_status()
+        
+        today_time = datetime.now().strftime('%Y{y}%m{m}%d{d} %H:%M:%S').format(y='年', m='月', d='日')
+        # 加载并打印json数据
+        weatherData = json.loads(response.text)
+        info = weatherData['list']
+        address = info[0]['name']
+        tem_min = int(info[0]['main']['temp_min'])
+        tem_max = int(info[0]['main']['temp_max'])
+        today = info[0]['weather'][0]['description']
 
             # 在一起，一共多少天了，如果没有设置初始日期，则不用处理
-            if start_date:
-                start_datetime = datetime.strptime(start_date, "%Y-%m-%d")
-                day_delta = (datetime.now() - start_datetime).days
-                delta_msg = f'宝贝这是我们在一起的第 {day_delta} 天。\n'
-            else:
-                delta_msg = ''
+        if start_date:
+            start_datetime = datetime.strptime(start_date, "%Y-%m-%d")
+            day_delta = (datetime.now() - start_datetime).days
+            delta_msg = f'ff小宝贝：这是我们在一起的第 {day_delta} 天。\n'
+            Des_toy = f'今日天气：{today}'
+            temperature = f'最低温度为{tem_min}˚C,最高温度是{tem_max}˚C'
 
-            today_msg = f'{today_time}\n{delta_msg}{notice}。\n{temperature}\n{wind}\n{aqi}\n{dictum_msg}{sweet_words if sweet_words else ""}\n'
-            return today_msg
+        else:
+            delta_msg = ''
+
+        today_msg = f'{today_time}\n{delta_msg}。\n{Des_toy}\n{temperature}\n{dictum_msg}{sweet_words if sweet_words else ""}\n'
+        return today_msg
 
 
 if __name__ == '__main__':
