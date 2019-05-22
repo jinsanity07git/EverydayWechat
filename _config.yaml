@@ -3,7 +3,7 @@
 #  http://einverne.github.io/post/2015/08/yaml.html
 
 # 定时时间、
-alarm_timed: '9:23'
+alarm_timed: '8:00'
 
 # 格言渠道
 # 1 : ONE●一个
@@ -11,25 +11,34 @@ alarm_timed: '9:23'
 dictum_channel: 1
 
 girlfriend_infos:
+
   -
     #女友微信昵称
-    wechat_name: 'FF'
+    wechat_name: 'jinsanity'
     #女友所在桂林  Milwaukee
     city_name: '桂林'  
     # 从那天开始勾搭的（可空）
     start_date: '2018-07-22'
     # 短句的最后留言（可空）
     sweet_words: '来自最爱你的hh。'
-
   #如果有你多个人需要发送，则参照这个样式，复制即可
-  -
-    #女友微信昵称
-    wechat_name: 'Slim Sh@dy'
-    #女友所在桂林  Milwaukee
-    city_name: '桂林'  
-    # 从那天开始勾搭的（可空）
-    start_date: '2018-07-22'
-    # 短句的最后留言（可空）
-    sweet_words: '来自最爱你的hh。'
+  # -
+  #   #女友微信昵称
+  #   wechat_name: 'Slim Sh@dy'
+  #   #女友所在桂林  Milwaukee
+  #   city_name: '桂林'  
+  #   # 从那天开始勾搭的（可空）
+  #   start_date: '2018-07-22'
+  #   # 短句的最后留言（可空）
+  #   sweet_words: '来自最爱你的hh。'
 
 
+  # -
+  #   #女友微信昵称
+  #   wechat_name: 'FF'
+  #   #女友所在桂林  Milwaukee
+  #   city_name: '桂林'  
+  #   # 从那天开始勾搭的（可空）
+  #   start_date: '2018-07-22'
+  #   # 短句的最后留言（可空）
+  #   sweet_words: '来自最爱你的hh。'
